@@ -1,2 +1,17 @@
 #Final Project
 INFO 3900
+
+```{r}
+#|label: import-setup
+#|
+library(tidyverse)
+
+```
+
+```{r}
+
+load("data/poli.Rdata")
+
+```
+
+

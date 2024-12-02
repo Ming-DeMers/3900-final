@@ -1,26 +1,26 @@
 {
-    "id": "67907660",
+    "id": "434B1094",
     "path": "~/Courses/INFO 3900/final_project/index.Rmd",
     "project_path": "index.Rmd",
     "type": "r_markdown",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1733154756052.0,
+    "created": 1733155393929.0,
     "source_on_save": false,
-    "relative_order": 1,
+    "relative_order": 2,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "2,0",
-        "scrollLine": "0"
+        "cursorPosition": "12,23",
+        "scrollLine": "9"
     },
     "folds": "",
-    "lastKnownWriteTime": 1733154767,
+    "lastKnownWriteTime": 1733155496,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1733154767738,
+    "last_content_update": 1733155502475,
     "read_only": false,
     "read_only_alternatives": []
 }
