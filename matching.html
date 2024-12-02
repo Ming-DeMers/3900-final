@@ -11,7 +11,7 @@
 
 
 
-<title>index.knit</title>
+<title>matching.knit</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -366,8 +366,10 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>library(MatchIt)</code></pre>
+<div id="the-data" class="section level2">
+<h2>The Data</h2>
 <pre class="r"><code>load(&quot;data/poli.Rdata&quot;)
-
 
 head(poli)</code></pre>
 <pre><code>##   leg_state leg_chamber leg_party leg_gender leg_latino leg_native leg_arab
@@ -419,6 +421,73 @@ head(poli)</code></pre>
 ## 4              8.967181       1
 ## 5             13.138599       1
 ## 6              9.934279       0</code></pre>
+<p>The data is sourced from TKTKTK. It contains synthetic data to
+emulate the responsiveness of a politician to the messages of their
+constituents.</p>
+</div>
+<div id="data-question" class="section level2">
+<h2>Data Question</h2>
+<p>Treatment: Proximity of constituent</p>
+<p>Outcome: Whether or not the legislator responds to the constituent’s
+request</p>
+</div>
+<div id="matching" class="section level2">
+<h2>Matching</h2>
+<p>We attempt to match.</p>
+<pre class="r"><code>#|label: matching
+
+treatment &lt;- poli$treat_out
+outcome &lt;- poli$code_some_response_given
+
+# Step 1
+match &lt;- matchit(outcome ~ treatment,
+                 data = poli,
+                 method = &quot;nearest&quot;,
+                 distance = &quot;Mahalanobis&quot;,
+                 estimand = &quot;ATT&quot;,
+                 ratio = 1,
+                 replace = T)
+
+match.data(match) -&gt; matched_df
+
+lm_mod &lt;- lm(treat_out ~ code_some_response_given,
+             data = matched_df,
+             weights = weights)
+
+summary(lm_mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = treat_out ~ code_some_response_given, data = matched_df, 
+##     weights = weights)
+## 
+## Weighted Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.3902 -0.3395 -0.3395  0.6605  0.6605 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)               3.395e-01  3.350e-01   1.014    0.311
+## code_some_response_given -2.244e-13  3.351e-01   0.000    1.000
+## 
+## Residual standard error: 0.4738 on 2365 degrees of freedom
+## Multiple R-squared:  1.024e-28,  Adjusted R-squared:  -0.0004228 
+## F-statistic: 2.421e-25 on 1 and 2365 DF,  p-value: 1</code></pre>
+<pre class="r"><code>att_est &lt;- coef(lm_mod)[&quot;code_some_response_given&quot;]
+print(att_est)</code></pre>
+<pre><code>## code_some_response_given 
+##            -2.243825e-13</code></pre>
+<pre class="r"><code>summary(match)$nn # number of matched</code></pre>
+<pre><code>##                   Control Treated
+## All (ESS)     3228.000000    2365
+## All           3228.000000    2365
+## Matched (ESS)    1.813243    2365
+## Matched          2.000000    2365
+## Unmatched     3226.000000       0
+## Discarded        0.000000       0</code></pre>
+<pre class="r"><code>print(round(att_est, 2)) # causal estimate</code></pre>
+<pre><code>## code_some_response_given 
+##                        0</code></pre>
+</div>
 
 
 

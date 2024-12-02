@@ -36,7 +36,7 @@ treatment <- poli$treat_out
 outcome <- poli$code_some_response_given
 
 # Step 1
-match <- matchit(code_some_response_given ~ treat_out,
+match <- matchit(outcome ~ treatment,
                  data = poli,
                  method = "nearest",
                  distance = "Mahalanobis",
