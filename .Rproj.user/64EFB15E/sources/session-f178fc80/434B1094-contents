@@ -12,7 +12,7 @@ library(MatchIt)
 
 ```{r}
 
-load("data/poli.Rdata")
+load("data/poli1.Rdata")
 
 head(poli)
 
@@ -36,24 +36,23 @@ treatment <- poli$treat_out
 outcome <- poli$code_some_response_given
 
 # Step 1
-match <- matchit(code_some_response_given ~ treat_out,
+match <- matchit(treat_out ~ code_some_response_given + leg_party + medianhhincom,
                  data = poli,
                  method = "nearest",
-                 distance = "Mahalanobis",
+                 distance = "logit",
                  estimand = "ATT",
                  ratio = 1,
                  replace = T)
 
 match.data(match) -> matched_df
 
-lm_mod <- lm(treat_out ~ code_some_response_given,
-             data = matched_df,
-             weights = weights)
+lm_mod <- lm(code_some_response_given ~ treat_out + leg_party + medianhhincom,
+             data = matched_df)
 
 summary(lm_mod)
 
 
-att_est <- coef(lm_mod)["code_some_response_given"]
+att_est <- coef(lm_mod)["treat_out"]
 print(att_est)
 
 summary(match)$nn # number of matched
