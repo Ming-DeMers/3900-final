@@ -11,7 +11,7 @@
 
 
 
-<title>matching.knit</title>
+<title>final_report.knit</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -352,147 +352,372 @@ display: none;
 </div>
 
 
-<p>#Final Project INFO 3900</p>
-<pre class="r"><code>#|label: import-setup
-
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.4     ✔ readr     2.1.5
-## ✔ forcats   1.0.0     ✔ stringr   1.5.1
-## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-## ✔ purrr     1.0.2     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>library(MatchIt)</code></pre>
-<div id="the-data" class="section level2">
-<h2>The Data</h2>
-<pre class="r"><code>load(&quot;data/poli1.Rdata&quot;)
-
-head(poli)</code></pre>
-<pre><code>##   leg_state leg_chamber leg_party leg_gender leg_latino leg_native leg_arab
-## 1        AK           L         R          M          0          0        0
-## 2        AK           L         R          F          0          0        0
-## 3        AK           L         R          F          0          0        0
-## 4        AK           L         R          M          0          1        0
-## 5        AK           L         D          M          0          1        0
-## 6        AK           L         R          M          0          0        0
-##   leg_asian leg_white leg_black leg_nonblackminority treat_out
-## 1         0         1         0                    0         0
-## 2         0         1         0                    0         0
-## 3         0         1         0                    0         0
-## 4         0         0         0                    1         0
-## 5         0         0         0                    1         1
-## 6         0         1         0                    0         1
-##   code_some_response_given totalpop whitepop blackpop nativepop asianpop
-## 1                        0   1.5873    11801      113      2647      741
-## 2                        1   1.6218    11705       94      3117      639
-## 3                        1   1.6710    12726      201      2011      980
-## 4                        1   1.6122     9370       69      5740      468
-## 5                        1   1.5622     6866      129      8095       99
-## 6                        0   1.6236    13968      192      1194      323
-##   islanderp otherrace hispanicp medianhhincom black_medianhh latino_medianhh
-## 1        59        65       447        5.0625         2.6814           14919
-## 2        82       104       477        4.9713         2.7126           18899
-## 3       136        81       575        6.9646         2.3087           13422
-## 4        47        56       372        4.1811         2.4668           14642
-## 5        34        95       304        3.1152         2.1490           10279
-## 6        47       128       384        6.0678         1.9856           16358
-##   white_medianhh blackpercent blackvotingpe nonblackvotin
-## 1         2.6586  0.007119007             0             0
-## 2         2.6619  0.005796029             0             0
-## 3         2.9973  0.012028725             0             0
-## 4         2.4887  0.004279866             0             0
-## 5         2.0597  0.008257585             0             0
-## 6         2.7017  0.011825573             0             0
-##   district_overallturnout demvotepercent urbanpercent south chamber
-## 1                       0      0.0000000    0.6956015     0       L
-## 2                       0      0.4267081    0.6180732     0       L
-## 3                       0      0.4524197    0.8243315     0       L
-## 4                       0      0.3845691    0.0000000     0       L
-## 5                       0      0.5361113    0.0000000     0       L
-## 6                       0      0.4999498    0.3583229     0       L
-##   dist_from_dist_to_out helpful ruralhousing urbanhouses totalhouses
-## 1             12.942397       0         2090        4776        6866
-## 2             11.585002       1         2557        4138        6695
-## 3             10.721048       1         1005        4716        5721
-## 4              8.967181       1         7987           0        7987
-## 5             13.138599       1         8620           0        8620
-## 6              9.934279       0         4117        2299        6416</code></pre>
-<p>The data is sourced from TKTKTK. It contains synthetic data to
-emulate the responsiveness of a politician to the messages of their
-constituents.</p>
-</div>
-<div id="data-question" class="section level2">
-<h2>Data Question</h2>
+<div id="final-report" class="section level1">
+<h1>Final report</h1>
+<ul>
+<li><p>Group Topic: Politics and Policy</p></li>
+<li><p>Team members: Ming DeMers, Danielle Donovan, Julian Kanu, Daisy
+Meng, Kate Sloan, Jemima Yoon</p></li>
+</ul>
+<div id="causal-question" class="section level2">
+<h2>Causal Question</h2>
+<div id="describe-your-causal-question-in-a-way-that-someone-who-has-not-taken-this-class-would-understand.-why-are-you-interested-in-this-question-how-could-answering-this-question-allow-for-better-decision-making-include-any-necessary-background-or-context.-cite-outside-sources-you-use." class="section level5">
+<h5>Describe your causal question in a way that someone who has not
+taken this class would understand. Why are you interested in this
+question? How could answering this question allow for better decision
+making? Include any necessary background or context. Cite outside
+sources you use.</h5>
+<p>How might the distance that a constituent lives from their legislator
+affect the likelihood of the constituent getting a response to a request
+sent to their legislator.</p>
+<p>This question is interesting because legislators oftentimes have to
+make decisions in situations that are difficult to observe, e.g. behind
+closed doors and in high security locations. In the context of this
+question, it is difficult to observe a given legislator in deciding what
+kind of requests from their constituents they will and will not respond
+to. The location of the constituent’s residence can be a factor that
+influences the legislator’s decision to respond to their constituents.
+Moreover, we as constituents do not always pay attention to the types of
+issues that legislators are presented with (and have to make a decision
+on). This question has significant real-life implications; for example,
+if legislators are found to be more likely to respond to the
+constituents who live within the same district, this may encourage
+higher voter turnout among the local constituents who feel like their
+voices are being heard.</p>
+<p><strong>Describe your causal question in the language of causal
+inference we’ve learned in this course: What is the treatment? What is
+the outcome? What are the potential outcomes? Write these out in words
+and in the math notation we have used in class.</strong></p>
+<p><span class="math inline">\(A_i = \begin{cases} 0 &amp; \text{If
+location far} \\ 1 &amp; \text{ If location is close}
+\end{cases}\)</span></p>
+<p><span class="math inline">\(Y_{constituent}^{a=1}\)</span></p>
+<p><span class="math inline">\(Y_{constituent}^{a=0}\)</span></p>
 <p>Treatment: Proximity of constituent</p>
-<p>Outcome: Whether or not the legislator responds to the constituent’s
-request</p>
+<p>Outcome: Usefulness of the legislator’s response to the constituent’s
+letter.</p>
 </div>
-<div id="matching" class="section level2">
-<h2>Matching</h2>
-<p>We attempt to match.</p>
-<pre class="r"><code>#|label: matching
-
-treatment &lt;- poli$treat_out
-outcome &lt;- poli$code_some_response_given
-
-# Step 1
-match &lt;- matchit(treat_out ~ code_some_response_given + leg_party + medianhhincom,
-                 data = poli,
-                 method = &quot;nearest&quot;,
-                 distance = &quot;logit&quot;,
-                 estimand = &quot;ATT&quot;,
-                 ratio = 1,
-                 replace = T)
-
-match.data(match) -&gt; matched_df
-
-lm_mod &lt;- lm(code_some_response_given ~ treat_out + leg_party + medianhhincom,
-             data = matched_df)
-
-summary(lm_mod)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = code_some_response_given ~ treat_out + leg_party + 
-##     medianhhincom, data = matched_df)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -0.6309 -0.3358 -0.2717  0.5988  0.7811 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    0.298252   0.025345  11.768  &lt; 2e-16 ***
-## treat_out     -0.115447   0.015172  -7.609 3.39e-14 ***
-## leg_partyI    -0.269135   0.329075  -0.818   0.4135    
-## leg_partyP     0.380882   0.268769   1.417   0.1565    
-## leg_partyR     0.032515   0.014579   2.230   0.0258 *  
-## leg_partyR+D  -0.326952   0.465463  -0.702   0.4825    
-## medianhhincom  0.020672   0.005072   4.076 4.66e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.4651 on 4193 degrees of freedom
-## Multiple R-squared:  0.01994,    Adjusted R-squared:  0.01854 
-## F-statistic: 14.22 on 6 and 4193 DF,  p-value: 4.195e-16</code></pre>
-<pre class="r"><code>att_est &lt;- coef(lm_mod)[&quot;treat_out&quot;]
-print(att_est)</code></pre>
-<pre><code>##  treat_out 
-## -0.1154466</code></pre>
-<pre class="r"><code>summary(match)$nn # number of matched</code></pre>
-<pre><code>##                 Control Treated
-## All (ESS)     2814.0000    2779
-## All           2814.0000    2779
-## Matched (ESS)  940.5482    2779
-## Matched       1421.0000    2779
-## Unmatched     1393.0000       0
-## Discarded        0.0000       0</code></pre>
-<pre class="r"><code>print(round(att_est, 2)) # causal estimate</code></pre>
-<pre><code>## treat_out 
-##     -0.12</code></pre>
+<div id="draw-a-dag-representing-your-causal-question-that-includes-at-least-three-relevant-variables-besides-treatment-and-outcome-that-are-included-in-your-dataset.-you-may-include-more-than-three-variables.-you-may-include-variables-that-are-not-in-your-dataset-but-at-least-3-of-your-variables-excluding-treatment-and-outcome-must-be-included-in-your-dataset.-if-you-use-letters-to-denote-variables-make-sure-they-are-clearly-defined" class="section level5">
+<h5>Draw a DAG representing your causal question that includes at least
+three relevant variables besides treatment and outcome that are included
+in your dataset. You may include more than three variables. You may
+include variables that are not in your dataset, but at least 3 of your
+variables (excluding treatment and outcome) must be included in your
+dataset. If you use letters to denote variables, make sure they are
+clearly defined</h5>
+<p><strong>Answer</strong></p>
+</div>
+<div id="explain-your-dag-tell-us-in-words-what-is-meant-by-each-edge-in-your-dag." class="section level5">
+<h5>Explain your DAG: tell us in words what is meant by each edge in
+your DAG.</h5>
+<p>A-&gt;Y This is a direct causal path for location and the usefulness
+of the response. A&lt;-M-&gt;Y This shows how the median household
+income which is M impacts the location in which you are living which
+also influences the response that you get. R-&gt;P-&gt;Y: The amount of
+rural housing( R) will influence the legislative party as rural areas
+tend to be redder, and it will also affect the response as there can be
+more or fewer incentives based on your party. A&lt;-P-&gt;Y: This shows
+how the legislative party(P) of an area impacts the location as we are
+assuming that red areas tend to be more rural, which also impacts the
+response since some politicians may prefer to represent certain areas or
+demographics.</p>
+</div>
+<div id="discuss-your-dag.-how-realistic-is-it-are-there-variables-or-edges-you-excluded-from-your-dag-that-someone-else-might-argue-should-be-included-playing-devils-advocate-how-would-you-critique-the-reliability-of-your-dag" class="section level5">
+<h5>Discuss your DAG. How realistic is it? Are there variables or edges
+you excluded from your DAG that someone else might argue should be
+included? Playing devil’s advocate, how would you critique the
+reliability of your DAG?</h5>
+<p>This DAG is realistic because the variables included are fairly
+broad, and their effects on multiple other variables are demonstrated.
+Although our study focuses on location and response, median household
+income and the legislative party can impact both of these variables, as
+explained above. We excluded race, however, which we initially
+considered a confounder. However, our study chooses to focus on other
+factors that may also be affected by race.. Race may affect location and
+response outside of median household income because of other systemic
+bias or deliberate manipulation we couldn’t formalize in our
+dag:systemic segregation, redlining, and gerrymandering, for example.
+Another variable that one may argue should be included is age; some
+politicians make it a goal to listen to their younger constituents,
+while some politicians’ voter base may be older, which will impact the
+helpfulness of the response.</p>
+</div>
+</div>
+<div id="method-and-identification" class="section level2">
+<h2>Method and Identification</h2>
+<div id="what-method-are-you-using-to-estimate-a-causal-effect-what-causal-effect-are-you-estimating-ate-vs-late-vs-att-what-assumptions-are-required-to-identify-the-causal-effect-via-your-chosen-method" class="section level5">
+<h5>What method are you using to estimate a causal effect? What causal
+effect are you estimating (ATE vs LATE vs ATT)? What assumptions are
+required to identify the causal effect via your chosen method?</h5>
+<p>We use nearest neighbor model as it favors a fast, but accurate
+result over medium and large sample sizes. This approach matches treated
+units (constituents close to the legislator) to control units (those
+farther away) based on their similarity in observed covariates. The
+causal effect is estimated by average treatment effect on treated (ATT).
+This measures the group as a whole, and finding if they are better or
+worse off given a treatment, on average.</p>
+<p>Some of the assumptions that are made to  identify the causal effect
+via ATT are the idea of conditional exchangeability. And we ultimately
+chose ATT because we want to find the average treatment effect of the
+treated, due to the design of the experiment we would only want to see
+the outcome to those who actually specified their location(treatment)
+and not those who do not match the the far or near criteria. </p>
+</div>
+<div id="explain-what-conditional-exchangeability-means-in-the-context-of-your-causal-question.-is-it-important-why-or-why-not-how-do-sufficient-adjustment-sets-relate-to-conditional-exchangeability" class="section level5">
+<h5>Explain what conditional exchangeability means in the context of
+your causal question. Is it important? Why or why not? How do sufficient
+adjustment sets relate to conditional exchangeability?</h5>
+<p>M(Median income) and P(political Party)  are confounding variables
+and need to be blocked. By blocking the backdoor paths A&lt;-M-&gt;Y
+and  A&lt;-P-&gt;Y, we satisfy the conditional exchangeability
+assumption. This is important because the location of constituents is
+not randomized; we are working with observational data. As we have
+explained, location is affected by political party and income, unless we
+condition on these variables, we will not satisfy any type of
+exchangeability. If we do not satisfy the exchangeability assumption, we
+cannot tell if the response rate is caused by income or party rather
+than location. When we satisfy conditional exchangeability, we can be
+more confident on the causal effect of location.</p>
+</div>
+<div id="assuming-your-dag-is-true-list-out-all-non-causal-paths-between-treatment-and-outcome-and-list-one-sufficient-adjustment-set-to-identify-the-causal-effect-of-the-treatment-on-the-outcome.-if-a-sufficient-adjustment-set-does-not-exist-add-additional-variables-to-your-dag-so-that-one-does-exist." class="section level5">
+<h5>Assuming your DAG is true, list out all non-causal paths between
+treatment and outcome and list one sufficient adjustment set to identify
+the causal effect of the treatment on the outcome. If a sufficient
+adjustment set does not exist, add additional variables to your DAG so
+that one does exist.</h5>
+<p>All non-causal paths in the DAG above include: </p>
+<p>A&lt;-M-&gt;Y, median household income impacts the location in which
+you are living which also influences the response that you get. </p>
+<p>R-&gt;P-&gt;Y: Amount of rural housing will influence the legislative
+party will also affect the response as there can be more or fewer
+incentives based on your party. </p>
+<p>A&lt;-P-&gt;Y: This shows how the legislative party of an area
+impacts the location as we are assuming that red areas tend to be more
+rural, which also impacts the response.</p>
+<p>One sufficient adjustment set is {P, M}. By adjusting for M and P,
+you will see the isolated causal effect of A to Y since you would be
+blocking the back door paths.</p>
+</div>
+<div id="discuss-the-plausibility-of-conditional-exchangeability-in-your-setting.-if-your-sufficient-adjustment-set-contains-variables-that-are-not-in-your-dataset-discuss-the-implications." class="section level5">
+<h5>Discuss the plausibility of conditional exchangeability in your
+setting. If your sufficient adjustment set contains variables that are
+not in your dataset, discuss the implications.</h5>
+<p>The sufficient adjustment set does not have any variables that are
+not found in the data set, as the dataset and its observations are
+extensive. Because the data accounts for multiple confounders,
+conditional exchangeability is plausible. Additionally, suppose we
+adjust the sufficient adjustment set identified previously {P, M} and
+assume that no other factors affect the effect of A to Y. In that case,
+it can be assumed that the direct causal path from A to Y would be
+legitimate. By controlling for political party and median household
+income, we can assume that the most significant confounding variables
+have been accounted for. Many smaller factors can be mostly accounted
+for within these variables. </p>
+<p>As mentioned previously, it is possible that there are variables not
+in the data set that could be confounders on their own, such as race
+(included in data set) or age of the constituent (not included in the
+data set). If these confounders are relevant, it could impact the
+plausibility of conditional exchangeability. However, we have reasoned
+that these variables are not relevant to our research since there is no
+effort to identify or separate the age groups of the constituents, and
+race would not necessarily affect distance.</p>
+</div>
+<div id="discuss-any-other-identification-assumptions-for-your-method-here-such-as-positivity-and-consistency.-what-do-they-mean-in-the-context-of-your-causal-question-and-are-they-plausible" class="section level5">
+<h5>Discuss any other identification assumptions for your method here,
+such as positivity and consistency. What do they mean in the context of
+your causal question and are they plausible?</h5>
+<p>Positivity may be violated in cases if only rural areas or low-income
+areas align one party (like Republicans) and live very far away from the
+location. However, positivity would not be violated if there are
+variations in party alignment P or variations in M (median income) and
+the location is close. We assume that the positivity would not be
+violated as income and political alignment is not a determining factor
+of whether or not one lives further away from the politician. Thus the
+treatments exist. </p>
+<p>While we can assume that a certain type of people may choose to live
+more rural or urban, there is not a clear cut-off. There is some
+correlation between income and political party that separates people
+into different neighborhoods based on both of these factors. However,
+there is no reason to believe that neighborhoods are dispersed in such a
+way that one group (high or low income/Republican or Democrat) would be
+mostly either in the treated or untreated group. We are also assuming
+that there is consistency in our method since the distance is already
+defined in the data set. The distance is precise and divides everyone
+into two exclusive categories. Y=Y^a and A=a. It is also consistent
+because there is clarity about interference. This is true because
+people’s messages and responses should be independent from one
+another. </p>
+<p>However, one thing that might cause interference is that in some
+cases, someone may be more likely to receive a response if their
+neighbor does. If an issue is affectinga specific area and many people
+complain about it, a resident in that group may be more likely to
+receive a response than someone who makes a unique complaint.</p>
+</div>
+</div>
+<div id="discussion-analysis-and-results" class="section level2">
+<h2>Discussion: Analysis and Results</h2>
+<div id="give-some-context-for-your-dataset.-who-is-included-in-your-dataset-how-was-the-data-collected-when-was-the-data-collected-make-sure-to-cite-the-dataset." class="section level5">
+<h5>Give some context for your dataset. Who is included in your dataset?
+How was the data collected? When was the data collected? Make sure to
+cite the dataset.</h5>
+<p>The dataset consists of demographic information regarding the
+legislators, the districts they represent (including voter turnout and
+urban/rural housing), whether or not the legislators responded to the
+constituents’ requests, and whether or not the legislators were helpful
+in their response. The original data on the legislators and their
+districts involved in the experiment was collected through public state
+legislative websites for all 50 states within the USA. This information
+includes the legislators’ race, party affiliation, and gender, as well
+as the racial diversity of the districts and the extent of urbanization
+within each district. The researcher that collected this data did not
+note when he collected this data, but given that his findings were
+published in 2013, the data was most likely collected about 2-3 years
+prior (2010-2012) (cleaned dataset: <a href="https://github.com/Ming-DeMers/3900-final/blob/main/data/poli1.Rdata" class="uri">https://github.com/Ming-DeMers/3900-final/blob/main/data/poli1.Rdata</a>)
+( original Data set: <a href="https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/AMMI3S/QCV5DG&amp;version=2.1&amp;toolType=PREVIEW" class="uri">https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/AMMI3S/QCV5DG&amp;version=2.1&amp;toolType=PREVIEW</a> 
+)</p>
+</div>
+<div id="discuss-any-choices-you-made-regarding-data-cleaning-and-processing-did-your-data-have-missing-values-or-outliers-how-did-you-handle-them-were-there-any-variables-you-dichotomized-i.e.-made-binary-or-variables-that-you-changed-the-format-e.g.-yesno-to-10" class="section level5">
+<h5>Discuss any choices you made regarding data cleaning and processing:
+Did your data have missing values or outliers? How did you handle them?
+Were there any variables you dichotomized (i.e. made binary), or
+variables that you changed the format (e.g. yes/no to 1/0)?</h5>
+<p>The original dataset was already very well-organized, so there was
+not much to clean. While there was one variable with missing values
+(percentage of those in a legislator’s district who voted Democratic),
+we were not interested in the variable and so the missing values did not
+pose an issue. </p>
+<p>We considered making the distance binary and setting up a threshold
+to what constitutes far or near. However, this dataset was constructed
+where the treatment is already considered “faraway city” or “nearby
+city,” and a column in the dataset indicating whether or not the
+legislator received the treatment.Thus, we didn’t think the actual
+quantified distances we have in the dataset are too important.
+Ultimately we did not dichotomize or change the format of any
+variables.</p>
+</div>
+<div id="discuss-the-impact-of-any-choices-you-made-regarding-your-dataset-such-as-choices-you-made-in-data-cleaning-or-processing." class="section level5">
+<h5>Discuss the impact of any choices you made regarding your dataset,
+such as choices you made in data cleaning or processing.</h5>
+<p>Initially, we removed the urban/rural housing variables because we
+did not think it would be included in the DAG. However, redecided when
+designing the DAG. We reincluded the urban/housing variables. This is
+because, depending on the area, living more urban or rural may impact
+one’s political affiliation which may also in turn, impact the
+politician’s response rate.</p>
+</div>
+<div id="explain-how-you-estimated-a-causal-effect." class="section level5">
+<h5>Explain how you estimated a causal effect.</h5>
+<ul>
+<li>If you used matching, explain and discuss your choices. What formula
+did you use and why? What matching strategy did you use and why? Are
+there any advantages or drawbacks to the strategy you chose? How many
+units did your matching drop? How was the covariate balance in your
+matched sample? Discuss the implications of any choices you made and the
+quality of your matching.</li>
+<li>If you didn’t use matching, explain any choices you made related to
+the method you used and discuss their implications. Think about
+advantages or drawbacks to any choices you made, possible bias-variance
+trade-offs, and assessing how well your method did.</li>
+</ul>
+<p>We estimated the causal effect of proximity on legislator
+responsiveness using propensity score matching. The treatment variable,
+treat_out, indicating proximity, was modeled as a function of covariates
+to ensure matching based on all variables likely to influence both
+treatment assignment (proximity) and the outcome (responsiveness), as
+shown by our DAG, thus reducing confounding.</p>
+<p>We used nearest-neighbor matching with replacement. This method pairs
+treated units with the closest control units ensuring immediate matches
+with minimal differences.Allowing replacement improved match quality,
+especially when control units were limited, but also meant that some
+control units were reused multiple times, potentially reducing
+representativeness.</p>
+<p>Matching dropped 1,393 control units, reflecting a potential
+positivity violation. After matching, covariate balance improved
+substantially between treated and control groups, suggesting the
+matching process was effective in creating comparable groups.</p>
+<p>The advantages include its ability to reduce bias from observed
+confounders and to make causal estimates more credible. However, its
+reliance on the previously mentioned assumptions on confounders and
+exchangeability means that any unmeasured confounders could still bias
+the estimate. Additionally, dropping unmatched units could limit the
+generalizability of the findings to the matched sample. Overall, the
+method provided a credible estimate of the ATT, but the quality of the
+matching and potential for unobserved confounding highlight areas where
+the analysis could be improved.</p>
+</div>
+<div id="report-your-causal-effect-estimate-and-interpret-it-in-the-context-of-your-causal-question." class="section level5">
+<h5>Report your causal effect estimate and interpret it in the context
+of your causal question.</h5>
+<p>Our estimated causal effect, the ATT, is -0.12. This means proximity,
+on average, decreased the likelihood of a legislator responding to a
+request by approximately 12 points. That is, for our constituents that
+are closer to their legislator, they are less likely to receive a
+response to a request that than those who live further away, by around
+0.12%</p>
+<p>This result suggests that proximity might negatively influence
+responsiveness, possibly due to factors like higher demand from nearby
+constituents, strategic political behavior, or other unobserved
+confounders associated with being “close.” One possible mathematical
+explanation would be that, given a steady density of inhabitants at any
+given distance from the legislator, there will be more total inhabitants
+in the circumference of a larger radius than a smaller one.</p>
+<p>Overall, the causal effect estimate suggests that simply being
+geographically closer to a legislator does not guarantee greater
+responsiveness and, in this case, appears to reduce it.</p>
+</div>
+<div id="discuss-the-limitations-of-your-analysis-what-are-the-limitations-of-your-dataset-is-there-other-data-you-would-have-wanted-to-have-to-bolster-your-analysis-playing-devils-advocate-how-would-you-critique-the-reliability-of-you-causal-estimate" class="section level5">
+<h5>Discuss the limitations of your analysis: what are the limitations
+of your dataset? Is there other data you would have wanted to have to
+bolster your analysis? Playing devil’s advocate, how would you critique
+the reliability of you causal estimate?</h5>
+<p>Our analysis is ultimately limited by the nature of the dataset and
+the assumptions required for the methodology. Foremost, the dataset is
+synthetic, meaning it is constructed to simulate real-world scenarios,
+yet may not fully capture the complexities of legislative behavior and
+constituent-legislator dynamics.</p>
+<p>The binary treatment variable (treat_out), which indicates proximity,
+oversimplifies distance into a treated or control category. A continuous
+measure of proximity could’ve better capture the nuances of how distance
+affects responsiveness. However, we would have binarized any linear
+measurement as otherwise would’ve been outside the scope of this
+project. </p>
+<p>To bolster the analysis, we would have liked to include data on the
+nature and content of constituent requests (e.g., their urgency or
+importance), as this likely influences whether a legislator responds.
+What are the actual contents of the requests? Legislators likely have an
+agenda they focus on for each term, and thus targe certain requests more
+than others, despite the distance of the residence of requester.
+Legislative factors such as staff capacity, workload, and district size
+could also provide a clearer understanding of constraints on
+responsiveness. </p>
+<p>Critiquing the causal estimate, the analysis relies on several key
+assumptions, positivity and consistency, and ultimately conditional
+exchangeability. If unmeasured factors, like the complexity of
+constituent issues or district-specific political dynamics, influence
+both treatment and outcome, the estimate may be biased. While propensity
+score matching improved balance, residual imbalances in covariates and
+the exclusion of 1,393 unmatched control units suggest potential
+violations of the positivity assumption. This could restrict the
+generalizability of the findings to the matched sample rather than the
+broader population.</p>
+<p>Moreover, the lower r-squared value in the regression model could
+indicate that only a small proportion of the variance in responsiveness
+is explained by the covariates included, suggesting other unobserved
+factors may play a significant role. While the analysis provides
+insights into how proximity might influence responsiveness, we can, at
+best, say our conclusions apply to this synthetic dataset, and may apply
+to a real-world example. But more data collection and research would be
+necessary.</p>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div id="code" class="section level1">
+<h1>Code:</h1>
+<pre class="r"><code># This is where your code goes for the data cleaning/processing and analysis. 
+# Make your code clean and easy-to-follow. Add short comments to explain what you are doing. 
+# If a classmate who wasn’t as familiar with R were to read through this section, 
+# would they be able to follow along?</code></pre>
 </div>
 
 
